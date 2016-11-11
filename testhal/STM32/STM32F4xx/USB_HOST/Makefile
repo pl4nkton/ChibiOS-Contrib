@@ -74,6 +74,11 @@ ifeq ($(USE_FPU),)
   USE_FPU = no
 endif
 
+# FPU-related options.
+ifeq ($(USE_FPU_OPT),)
+  USE_FPU_OPT = -mfloat-abi=$(USE_FPU) -mfpu=fpv5-sp-d16 -fsingle-precision-constant
+endif
+
 #
 # Architecture or project specific options
 ##############################################################################
@@ -88,6 +93,7 @@ PROJECT = ch
 # Imported source files and paths
 CHIBIOS = ../../../../../ChibiOS-RT
 CHIBIOS_CONTRIB = $(CHIBIOS)/../ChibiOS-Contrib
+
 # Startup files.
 include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f4xx.mk
 # HAL-OSAL files (optional).
@@ -102,10 +108,10 @@ include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 include $(CHIBIOS)/test/rt/test.mk
 include $(CHIBIOS)/os/hal/lib/streams/streams.mk
 include $(CHIBIOS)/os/various/shell/shell.mk
-include $(CHIBIOS)/os/various/fatfs_bindings/fatfs.mk
+include $(CHIBIOS_CONTRIB)/os/various/fatfs_bindings/fatfs.mk
 
 # Define linker script file here
-LDSCRIPT= $(STARTUPLD)/STM32F407xG.ld
+LDSCRIPT = $(STARTUPLD)/STM32F407xG.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
